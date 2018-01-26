@@ -11,8 +11,9 @@
 
     //actions
     const validateFields = (e) => {
-        console.log('validate', e)
-        debugger
+        console.log('validate', e.target)
+        e.preventDefault()
+        console.log(ui.fields[0].value)
     }
     const addContact = () => { }
     const getContact = () => { }
