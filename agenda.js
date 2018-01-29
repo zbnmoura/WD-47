@@ -1,5 +1,4 @@
 (() => {
-    console.log('hi')
     //user interface
     const ui = {
         fields: document.querySelectorAll('input'),
@@ -7,26 +6,25 @@
         table: document.querySelector('.pure-table')
     }
 
-    console.log(ui)
-
     //actions
     const validateFields = (e) => {
-        console.log('validate', e.target)
-        e.preventDefault()
-        console.log(ui.fields[0].value)
+        e.preventDefault();
+        let errors = 0;
+        let data = {};
+        ui.fields.forEach(function (field) {
+            if (field.value.length === 0) {
+                field.classList.add('error');
+            } else {
+                console.log('save');
+            }
+        });
     }
     const addContact = () => { }
     const getContact = () => { }
     const removeContact = () => { }
 
-    //const init = () => {
     const init = function () {
-        //mapping events
         console.log('mapping')
-        // ui.btn.onclick = validateFields
-        // ui.btn.onclick = addContact
         ui.btn.addEventListener('click', validateFields)
-
     }()
-    //init()
 })()
