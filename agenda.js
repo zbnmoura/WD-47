@@ -3,7 +3,7 @@
     const ui = {
         fields: document.querySelectorAll('input'),
         btn: document.querySelector('.pure-button-primary'),
-        table: document.querySelector('.pure-table')
+        table: document.querySelector('.pure-table tbody')
     }
     //actions
     const validateFields = (e) => {
@@ -28,9 +28,22 @@
         console.log(errors, data)
     };
 
-    const getContactSucess = function () {
-        console.log('listagem')
-        console.table(list)
+    const getContactSucess = function (list) {
+        let html = [];
+        list.forEach((item) => {
+            let line = `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.email}</td>
+                <td>${item.phone}</td>
+                <td>
+                    <a href="#" data-action="delete" data-id="${item.id}">excluir</a>
+                </td>
+            </tr>`;
+            html.push(line);
+        });
+        ui.table.innerHTML = html.join("");
     };
 
     const addContactSucess = function () {
@@ -51,38 +64,42 @@
     const addContact = (contact) => {
         const headers = new Headers();
         headers.append('Content-type', 'application/json');
-
         const config = { method: 'POST', body: JSON.stringify(contact) };
         const endpoint = 'http://localhost:8080/schedule';
         const objetasso = Object.assign({ headers: headers }, config);
-
         fetch(endpoint, objetasso).then(addContactSucess).catch(genericError);
-
-        console.log('config', config)
-        console.log('headers', headers)
+        //console.log('config', config)
+        //console.log('headers', headers)
     };
 
     const getContact = (contact) => {
         const headers = new Headers();
         headers.append('Content-type', 'application/json');
-
         const config = { method: 'GET' };
         const endpoint = 'http://localhost:8080/schedule';
         const objetasso = Object.assign({ headers: headers }, config);
-
         fetch(endpoint, objetasso).then((res) => res.json()).then(getContactSucess).catch(genericError);
-
-        console.log('config', config)
-        console.log('headers', headers)
     };
 
+    const removeContact = (id) => {
+        const headers = new Headers();
+        headers.append('Content-type', 'application/json');
+        const config = { method: 'DELETE' };
+        const endpoint = 'http://localhost:8080/schedule/${id}';
+        const objetasso = Object.assign({ headers: headers }, config);
+        fetch(endpoint, objetasso).then(getContact).catch(genericError);
+    };
+
+    const actionHandle = (e) => {
+        console.log('chamou', e.target.dataset);
+        if (e.target.dataset.action === "delete") {
+            console.log('apagar')
+        }
+        e.preventDefault();
+    };
     //botao top
     const init = function () {
-        ui.btn.addEventListener('click', validateFields)
+        ui.btn.addEventListener('click', validateFields);
+        ui.table.addEventListener('click', actionHandle);
     }();
-
-    const removeContact = () => { }
 })()
-
-
-//GUARDA-CHUVA
