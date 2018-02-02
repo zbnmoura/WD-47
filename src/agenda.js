@@ -60,7 +60,7 @@
             field.value = '';
         });
     };
-
+    
     const addContact = (contact) => {
         const headers = new Headers();
         headers.append('Content-type', 'application/json');
